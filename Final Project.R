@@ -126,7 +126,8 @@ boston_temp<-clean_list_data_frame(boston_temp)
 boston_foodplaces<-within(boston_foodplaces,rm(categories,venueChains,location.formattedAddress,hereNow.groups,specials.items))
 boston_foodplaces<-cbind(boston_foodplaces,boston_temp)
 boston_foodplaces <- boston_foodplaces[,!duplicated(colnames(boston_foodplaces))]
-write.csv(boston_foodplaces, file = "Boston_Food Places.csv",row.names=FALSE)
+boston_foodplaces = as.matrix(boston_foodplaces)
+write.csv(boston_foodplaces, file = "Boston_Food Places.csv", row.names=F)
 
 # Graph of Boston's Most Popular Cuisines
 detach("package:plyr",unload=T)
@@ -150,6 +151,7 @@ chicago_temp<-clean_list_data_frame(chicago_temp)
 chicago_foodplaces<-within(chicago_foodplaces,rm(categories,venueChains,location.formattedAddress,hereNow.groups,specials.items))
 chicago_foodplaces<-cbind(chicago_foodplaces,chicago_temp)
 chicago_foodplaces <- chicago_foodplaces[,!duplicated(colnames(chicago_foodplaces))]
+chicago_foodplaces = as.matrix(chicago_foodplaces)
 write.csv(chicago_foodplaces, file = "Chicago_Food Places.csv",row.names=FALSE)
 
 # Graph of Chicago's Most Popular Cuisines
@@ -173,6 +175,7 @@ dallas_temp<-clean_list_data_frame(dallas_temp)
 dallas_foodplaces<-within(dallas_foodplaces,rm(categories,venueChains,location.formattedAddress,hereNow.groups,specials.items))
 dallas_foodplaces<-cbind(dallas_foodplaces,chicago_temp)
 dallas_foodplaces <- dallas_foodplaces[,!duplicated(colnames(dallas_foodplaces))]
+dallas_foodplaces = as.matrix(dallas_foodplaces)
 write.csv(dallas_foodplaces, file = "Dallas_Food Places.csv",row.names=FALSE)
 
 # Graph of Dallas' Most Popular Cuisines
@@ -197,6 +200,7 @@ sf_temp<-clean_list_data_frame(sf_temp)
 sf_foodplaces<-within(sf_foodplaces,rm(categories,venueChains,location.formattedAddress,hereNow.groups,specials.items))
 sf_foodplaces<-cbind(sf_foodplaces,chicago_temp)
 sf_foodplaces <- sf_foodplaces[,!duplicated(colnames(sf_foodplaces))]
+sf_foodplaces = as.matrix(sf_foodplaces)
 write.csv(sf_foodplaces, file = "San Francisco_Food Places.csv",row.names=FALSE)
 
 # Graph of San Francisco's Most Popular Cuisines
