@@ -1,7 +1,7 @@
 ---
 title: "Most Popular Cuisines Across the US"
 author: "Kevin Chan"
-date: "6 May 2018"
+date: "May 7, 2018"
 output:
   pdf_document: default
   html_document: default
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Purpose of This Project
-### The purpose of this project is to find out what types of cuisines are most popular among residents and tourists of the cities of Boston, Chicago, Dallas, and San Francisco. To do this, real-time data was obtained by tapping into the Foursquare API.
+### The purpose of this project is to find out what types of cuisines are most popular among residents and tourists of the cities of Boston, Chicago, Dallas, and San Francisco. To do this, real-time data was obtained by tapping into the Foursquare API. The data collected were the venues and their information that popped up as a result of tapping into the API.
 
 ## Loading the Libraries Required for this Project
 ```{r}
@@ -210,7 +210,7 @@ ggplot(chicago_cuisine, aes(x = shortName, y = count, fill = shortName)) + geom_
   labs(title = "Most Popular Cuisines in Chicago", x = "Cuisine", y="Frequency")
 ```
 
-### Conclusion: The most popular cuisine in Chicago is Chinese cuisine, followed by Italian and Indian cuisine as well as New American and Diner-style establishments. Some notes to consider are that the API collects real-time data and that it only collects a small sample of all the restaurants, so the data collected and graph are subject to change.
+### Conclusion: The most popular cuisine in Chicago is Chinese cuisine, followed by Italian and Indian cuisine as well as New American and Diner-style establishments. Again, the API collects real-time data and that it only collects a small sample of all the restaurants, so the data collected and graph are subject to change.
 
 ## Dallas' Restaurant Data
 ```{r}
@@ -227,7 +227,7 @@ dallas_temp<-data.frame(t(sapply(dallas_foodplaces$categories,c)))
 
 dallas_temp<-clean_list_data_frame(dallas_temp)
 dallas_foodplaces<-within(dallas_foodplaces,rm(categories,venueChains,location.formattedAddress,hereNow.groups,specials.items))
-dallas_foodplaces<-cbind(dallas_foodplaces,chicago_temp)
+dallas_foodplaces<-cbind(dallas_foodplaces,dallas_temp)
 dallas_foodplaces <- dallas_foodplaces[,!duplicated(colnames(dallas_foodplaces))]
 ```
 
@@ -257,7 +257,7 @@ sf_temp<-data.frame(t(sapply(sf_foodplaces$categories,c)))
 
 sf_temp<-clean_list_data_frame(sf_temp)
 sf_foodplaces<-within(sf_foodplaces,rm(categories,venueChains,location.formattedAddress,hereNow.groups,specials.items))
-sf_foodplaces<-cbind(sf_foodplaces,chicago_temp)
+sf_foodplaces<-cbind(sf_foodplaces,sf_temp)
 sf_foodplaces <- sf_foodplaces[,!duplicated(colnames(sf_foodplaces))]
 ```
 
@@ -269,4 +269,26 @@ ggplot(sf_cuisine, aes(x = shortName, y = count, fill = shortName)) + geom_bar(s
   labs(title = "Most Popular Cuisines in San Francisco", x = "Cuisine", y="Frequency")
 ```
 
-### Conclusion: The most popular cuisine in San Francisco is Chinese cuisine, followed by Italian and Indian cuisine as well as New American and Diner-style establishments. Some notes to consider are that the API collects real-time data and that it only collects a small sample of all the restaurants, so the data collected and graph are subject to change.
+### Conclusion: The most popular cuisine in San Francisco is Chinese cuisine, followed by Italian and Indian cuisine. Some things to consider are that the API collects real-time data and that it only collects a small sample of all the restaurants, so the data collected and graph are subject to change.
+
+
+## T-Tests Comparing Number of Venues for Each City
+```{r}
+# t-tests to compare number of venues for each city
+## Boston and Chicago
+t.test(boston_cuisine$count, chicago_cuisine$count, paired=T)
+## Boston and Dallas
+t.test(boston_cuisine$count, dallas_cuisine$count, paired=T)
+## Boston and San Francisco
+t.test(boston_cuisine$count, sf_cuisine$count, paired=T)
+## Chicago and Dallas
+t.test(chicago_cuisine$count, dallas_cuisine$count, paired=T)
+## Chicago and San Francisco
+t.test(chicago_cuisine$count, sf_cuisine$count, paired=T)
+## Dallas and San Francisco
+t.test(dallas_cuisine$count, sf_cuisine$count, paired=T)
+```
+
+### T-Test Conclusion: There is not much difference in the number of restaurants in various cuisines between Chicago, Dallas, and San Francisco, but the difference lies in Boston's number of restaurants in various cuisines. Perhaps, Boston has more variety in cultures than the other cities, but that conclusion is only based on the data collected.
+
+### Overall Conclusion: While the most popular cuisine in Boston is American, the most popular cuisines in Chicago, Dallas, and San Francisco are Chinese. From the data collected, it seems that Boston has more variety of cuisines than the other cities, seeing that there are more cuisines listed for the Boston data than the data from the other cities. However, the data collecction is based off of obtaining real-time data, which can affect and alter the results presented here. Moreover, the data was collected mainly from city centres, which may have affected the distribution of restaurants in the cities observed.

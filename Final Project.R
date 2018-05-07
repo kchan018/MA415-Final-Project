@@ -173,7 +173,7 @@ dallas_temp<-data.frame(t(sapply(dallas_foodplaces$categories,c)))
 
 dallas_temp<-clean_list_data_frame(dallas_temp)
 dallas_foodplaces<-within(dallas_foodplaces,rm(categories,venueChains,location.formattedAddress,hereNow.groups,specials.items))
-dallas_foodplaces<-cbind(dallas_foodplaces,chicago_temp)
+dallas_foodplaces<-cbind(dallas_foodplaces,dallas_temp)
 dallas_foodplaces <- dallas_foodplaces[,!duplicated(colnames(dallas_foodplaces))]
 dallas_foodplaces = as.matrix(dallas_foodplaces)
 write.csv(dallas_foodplaces, file = "Dallas_Food Places.csv",row.names=FALSE)
@@ -208,3 +208,17 @@ detach("package:plyr",unload=T)
 sf_cuisine <- sf_foodplaces %>% group_by(shortName) %>% summarise(count = n())
 ggplot(sf_cuisine, aes(x = shortName, y = count, fill = shortName)) + geom_bar(stat = "identity") + coord_flip() + 
   labs(title = "Most Popular Cuisines in San Francisco", x = "Cuisine", y="Frequency")
+
+# t-tests to compare number of venues for each city
+## Boston and Chicago
+t.test(boston_cuisine$count, chicago_cuisine$count, paired=T)
+## Boston and Dallas
+t.test(boston_cuisine$count, dallas_cuisine$count, paired=T)
+## Boston and San Francisco
+t.test(boston_cuisine$count, sf_cuisine$count, paired=T)
+## Chicago and Dallas
+t.test(chicago_cuisine$count, dallas_cuisine$count, paired=T)
+## Chicago and San Francisco
+t.test(chicago_cuisine$count, sf_cuisine$count, paired=T)
+## Dallas and San Francisco
+t.test(dallas_cuisine$count, sf_cuisine$count, paired=T)
